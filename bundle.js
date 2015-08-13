@@ -50,6 +50,7 @@
 	var Incrementer = __webpack_require__(3);
 	var React = __webpack_require__(4);
 	window.React = React;
+	window.flux = flux;
 
 	React.render(React.createElement(Incrementer, null), document.getElementById('react'));
 
@@ -6256,12 +6257,15 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+
+	var React = __webpack_require__(4);
+	var NuclearIncrementor = __webpack_require__(160);
 
 	var Incrementer = React.createClass({
-	  displayName: "Incrementer",
+	  displayName: 'Incrementer',
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -6275,21 +6279,23 @@
 	  },
 	  render: function render() {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "div",
+	        'div',
 	        null,
 	        this.state.counter
 	      ),
 	      React.createElement(
-	        "button",
+	        'button',
 	        { onClick: this.increment },
-	        "Increment"
+	        'Increment'
 	      )
 	    );
 	  }
 	});
+
+	module.exports = Incrementer;
 
 /***/ },
 /* 4 */
@@ -26665,6 +26671,157 @@
 	module.exports = onlyChild;
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var flux = __webpack_require__(1);
+
+	flux.registerStores({
+	  numStore: __webpack_require__(161)
+	});
+
+	module.exports = {
+	  getters: __webpack_require__(164),
+	  actions: __webpack_require__(165)
+	};
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Nuclear = __webpack_require__(2);
+	var toImmutable = Nuclear.toImmutable;
+	var actionTypes = __webpack_require__(162);
+	var flux = __webpack_require__(1);
+	var getters = __webpack_require__(164);
+
+	module.exports = new Nuclear.Store({
+	  getInitialState: function getInitialState() {
+	    return toImmutable({
+	      values: {
+	        incrementer: 0
+	      }
+	    });
+	  },
+
+	  initialize: function initialize() {
+	    this.on(actionTypes.INCREMENT, incrementValue);
+	  }
+	});
+
+	function incrementValue(state) {
+	  var val = flux.evaluate(getters.incrementerValue);
+	  debugger;
+	  if (typeof payload === 'number') {
+	    return state.setIn(['values', 'incrementer'], val);
+	  }
+	}
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var keyMirror = __webpack_require__(163);
+
+	module.exports = keyMirror({
+	  INCREMENT: null
+	});
+
+/***/ },
+/* 163 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 */
+
+	"use strict";
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  if (!(obj instanceof Object && !Array.isArray(obj))) {
+	    throw new Error('keyMirror(...): Argument must be an object.');
+	  }
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+
+
+/***/ },
+/* 164 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.values = ['values'];
+	// exports.incrementerValue = ['values', 'incrementer'];
+
+	exports.incrementerValue = [exports.values, function (values) {
+	  return values.get('incrementer') || 0;
+	}];
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var flux = __webpack_require__(1);
+	var actionTypes = __webpack_require__(162);
+	var getters = __webpack_require__(164);
+
+	exports.incrementValue = function (value) {
+	  if (typeof value === 'number') {
+	    flux.dispatch(actionTypes.INCREMENT, value);
+	  }
+	};
 
 /***/ }
 /******/ ]);

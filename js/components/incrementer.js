@@ -1,16 +1,16 @@
 var React = require('react');
 var NuclearIncrementor = require('../nuclear');
-var flux = require('../flux');
 
 var Incrementer = React.createClass({
-  mixins: [flux.ReactMixin],
-  getDataBindings: function() {
+  getInitialState: function() {
     return {
-      counter: NuclearIncrementor.getters.incrementerValue
+      counter: 0
     };
   },
   increment: function() {
-    // NuclearIncrementor.actions.incrementValue();
+    this.setState({
+      counter: this.state.counter + 1
+    });
   },
   render: function() {
     return <div>
