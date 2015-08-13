@@ -1,5 +1,4 @@
 exports.values = ['numStore', 'values'];
-// exports.incrementerValue = ['values', 'incrementer'];
 
 exports.incrementerValue = [
   exports.values,

@@ -26715,8 +26715,8 @@
 	});
 
 	function incrementValue(state) {
-	  var val = flux.evaluate(getters.incrementerValue) + 1;
-	  return state.setIn(['values', 'incrementer'], val);
+	  var incVal = flux.evaluate(getters.incrementerValue) + 1;
+	  return state.setIn(['values', 'incrementer'], incVal);
 	}
 
 /***/ },
@@ -26797,7 +26797,6 @@
 	'use strict';
 
 	exports.values = ['numStore', 'values'];
-	// exports.incrementerValue = ['values', 'incrementer'];
 
 	exports.incrementerValue = [exports.values, function (values) {
 	  return values.get('incrementer') || 0;
@@ -26814,6 +26813,8 @@
 	var getters = __webpack_require__(164);
 
 	exports.incrementValue = function () {
+	  // your business logic goes here!
+
 	  flux.dispatch(actionTypes.INCREMENT);
 	};
 

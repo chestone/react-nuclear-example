@@ -19,6 +19,6 @@ module.exports = new Nuclear.Store({
 });
 
 function incrementValue(state) {
-  var val = flux.evaluate(getters.incrementerValue) + 1;
-  return state.setIn(['values', 'incrementer'], val);
+  var incVal = flux.evaluate(getters.incrementerValue) + 1;
+  return state.setIn(['values', 'incrementer'], incVal);
 }
