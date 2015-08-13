@@ -10,7 +10,7 @@ var Incrementer = React.createClass({
     };
   },
   increment: function() {
-    // NuclearIncrementor.actions.incrementValue();
+    NuclearIncrementor.actions.incrementValue();
   },
   render: function() {
     return <div>

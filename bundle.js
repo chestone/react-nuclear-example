@@ -51,7 +51,6 @@
 	var React = __webpack_require__(4);
 	window.React = React;
 	window.flux = flux;
-
 	React.render(React.createElement(Incrementer, null), document.getElementById('react'));
 
 /***/ },
@@ -6263,19 +6262,19 @@
 
 	var React = __webpack_require__(4);
 	var NuclearIncrementor = __webpack_require__(160);
+	var flux = __webpack_require__(1);
 
 	var Incrementer = React.createClass({
 	  displayName: 'Incrementer',
 
-	  getInitialState: function getInitialState() {
+	  mixins: [flux.ReactMixin],
+	  getDataBindings: function getDataBindings() {
 	    return {
-	      counter: 0
+	      counter: NuclearIncrementor.getters.incrementerValue
 	    };
 	  },
 	  increment: function increment() {
-	    this.setState({
-	      counter: this.state.counter + 1
-	    });
+	    NuclearIncrementor.actions.incrementValue();
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -26716,11 +26715,8 @@
 	});
 
 	function incrementValue(state) {
-	  var val = flux.evaluate(getters.incrementerValue);
-	  debugger;
-	  if (typeof payload === 'number') {
-	    return state.setIn(['values', 'incrementer'], val);
-	  }
+	  var val = flux.evaluate(getters.incrementerValue) + 1;
+	  return state.setIn(['values', 'incrementer'], val);
 	}
 
 /***/ },
@@ -26800,7 +26796,7 @@
 
 	'use strict';
 
-	exports.values = ['values'];
+	exports.values = ['numStore', 'values'];
 	// exports.incrementerValue = ['values', 'incrementer'];
 
 	exports.incrementerValue = [exports.values, function (values) {
@@ -26817,10 +26813,8 @@
 	var actionTypes = __webpack_require__(162);
 	var getters = __webpack_require__(164);
 
-	exports.incrementValue = function (value) {
-	  if (typeof value === 'number') {
-	    flux.dispatch(actionTypes.INCREMENT, value);
-	  }
+	exports.incrementValue = function () {
+	  flux.dispatch(actionTypes.INCREMENT);
 	};
 
 /***/ }

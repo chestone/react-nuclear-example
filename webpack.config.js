@@ -10,11 +10,13 @@ module.exports = {
     filename: "[name].js",
   },
 
+  cache: false,
+
   module: {
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
       // required for react jsx
-      { test: /\.react.js$/, loader: "jsx-loader" },
+      // { test: /\.react.js$/, loader: "jsx-loader" },
     ]
   },
 }
